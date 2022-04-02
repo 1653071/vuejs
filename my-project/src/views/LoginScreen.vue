@@ -2,16 +2,17 @@
   <div class="login-container">
     <div class="form-container">
       <b-tabs
-        active-nav-item-class="font-weight-bold text-dark"
-        nav-item-class="font-weight-bold text-uppercase text-danger"
+        active-nav-item-class="font-weight-bold"
+        active-tab-class="font-weight-bold text-success"
+
         content-class="mt-3"
-        no-nav-style=""
+        pills
         fill
       >
-        <b-tab title="Login" active>
+        <b-tab title="Login" title-item-class="ttt"  active>
           <LoginForm />
         </b-tab >
-        <b-tab title="Register" >
+        <b-tab title="Register" title-item-class="ttt">
           <Register />
         </b-tab>
       </b-tabs>
@@ -51,9 +52,13 @@ export default {
   border-radius: 5px;
   width: 400px;
   height: 500px;
-  box-shadow: 5px 10px 8px #888888;
+
 }
-.tab-title-class {
-    color: #FF0000 !important;  
+.ttt:not(.active){
+  color: black !important;
+}
+.ttt:active{
+    color: white;
+    background-color: rgb(55, 133, 206) !important;
 }
 </style>

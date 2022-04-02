@@ -1,11 +1,7 @@
 <template>
   <div>
     <b-form class="form-login" @submit="onSubmit" @reset="onReset" v-if="show">
-      <b-form-group
-        id="input-group-1"
-        label-for="input-1"
-       
-      >
+      <b-form-group id="input-group-1" label-for="input-1">
         <b-form-input
           id="input-1"
           v-model="form.email"
@@ -14,21 +10,27 @@
           required
         ></b-form-input>
       </b-form-group>
-      <b-form-group
-        id="input-group-1"
-        label-for="input-1"
-        
-      >
+      <b-form-group id="input-group-1" label-for="input-1">
         <b-form-input
           id="input-1"
-          v-model="form.email"
+          v-model="form.password"
           type="password"
           placeholder="Enter password"
           required
         ></b-form-input>
       </b-form-group>
-
-      <b-button class="button-login" type="submit" variant="primary">Đăng nhập</b-button>
+      <b-alert
+        :show="dismissCountDown"
+        dismissible
+        variant="warning"
+        @dismissed="dismissCountDown = 0"
+        @dismiss-count-down="countDownChanged"
+      >
+        Error Email or Error Password
+      </b-alert>
+      <b-button class="button-login" type="submit" variant="primary"
+        >Đăng nhập</b-button
+      >
     </b-form>
   </div>
 </template>
@@ -41,23 +43,24 @@ export default {
         email: "",
         name: "",
         food: null,
-        checked: []
+        checked: [],
       },
+      dismissSecs: 5,
+      dismissCountDown: 0,
       foods: [
         { text: "Select One", value: null },
         "Carrots",
         "Beans",
         "Tomatoes",
-        "Corn"
+        "Corn",
       ],
-      show: true
+      show: true,
     };
   },
   methods: {
-    onSubmit(event) {
-      event.preventDefault();
-      alert(JSON.stringify(this.form));
-      this.$router.push('/')
+    onSubmit() {
+
+      this.showAlert();
     },
     onReset(event) {
       event.preventDefault();
@@ -71,20 +74,25 @@ export default {
       this.$nextTick(() => {
         this.show = true;
       });
-    }
-  }
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
+    },
+  },
 };
 </script>
 <style scoped>
-   #input-group-1{
-       margin-top: 30px;
-   }
-   .form-login{
-       padding: 30px;
-       
-   }
-   .button-login{
-       margin-top: 30px ;
-       width: 100%;
-   }
+#input-group-1 {
+  margin-top: 30px;
+}
+.form-login {
+  padding: 30px;
+}
+.button-login {
+  margin-top: 30px;
+  width: 100%;
+}
 </style>

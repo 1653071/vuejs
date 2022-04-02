@@ -1,7 +1,7 @@
 <template>
   <div id="app">
      <Navigation/>
-    
+
     <router-view/>
   </div>
 </template>
@@ -15,18 +15,18 @@ export default {
   components:{
     Navigation,Sidebar,Modal
   }
-    
+
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: var(--cui-font-sans-serif);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F0E8F0;
   color: #2c3e50;
-  
+
 }
 @import'~bootstrap/dist/css/bootstrap.css';
 </style>
