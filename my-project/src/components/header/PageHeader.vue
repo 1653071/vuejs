@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <h1>
+    <p class="page-header">
       User Management
-    </h1>
+    </p>
   </div>
 </template>
 <script>
@@ -14,4 +14,5 @@ export default {
 h1 {
   color: #a8a8a8;
 }
+
 </style>

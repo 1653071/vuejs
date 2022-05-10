@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
   
-     <h1>ADMIN</h1>
+     <h1>IT</h1>
   </div>
 </template>
 <script>

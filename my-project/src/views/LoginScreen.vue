@@ -1,21 +1,10 @@
 <template>
   <div class="login-container">
     <div class="form-container">
-      <b-tabs
-        active-nav-item-class="font-weight-bold"
-        active-tab-class="font-weight-bold text-success"
-
-        content-class="mt-3"
-        pills
-        fill
-      >
-        <b-tab title="Login" title-item-class="ttt"  active>
+          <div class="login-title">Login</div>
+       
           <LoginForm />
-        </b-tab >
-        <b-tab title="Register" title-item-class="ttt">
-          <Register />
-        </b-tab>
-      </b-tabs>
+       
     </div>
   </div>
 </template>
@@ -24,15 +13,20 @@ import ImageAdmin from "../components/image/ImageAdmin.vue";
 
 import UsersTable from "../components/table/UsersTable.vue";
 import LoginForm from "../components/form/LoginForm.vue";
-import Register from "../components/form/RegisterForm.vue"
+
 export default {
   name: "LoginScreen",
   components: {
     UsersTable,
     ImageAdmin,
     LoginForm,
-    Register
-  }
+
+  },
+  beforeCreate() {
+    if (this.userInfo) {
+        this.$router.push('/dashboard');
+    }
+  },
 };
 </script>
 <style>
@@ -49,16 +43,24 @@ export default {
   top: 100px;
   right: 150px;
   background-color: white;
-  border-radius: 5px;
+  border-radius: 10px;
   width: 400px;
   height: 500px;
 
+
+}
+.form-container .login-title{
+  font-size: 24px;
+  text-align: center;
+  margin-top: 40px;
+  font-weight: 900;
 }
 .ttt:not(.active){
   color: black !important;
 }
-.ttt:active{
+.ttt:focus{
     color: white;
     background-color: rgb(55, 133, 206) !important;
+    font-weight: 700 !important;
 }
 </style>

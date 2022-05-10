@@ -1,14 +1,23 @@
 <template>
   <div class="userstable container">
-    <b-table hover :items="items" :fields="fields">
+    <b-table
+       
+      hover
+      :items="items"
+      :fields="fields"
+      class="users-table"
+      id="users-table"
+      :per-page="perPage"
+      :current-page="currentPage"
+    >
       <template #cell(actions)="row">
         <b-button
-          variant="success"
+          variant="info"
           size="sm"
           @click="update(row.index, row.item, $event.target)"
-          class="mr-2"
+          class="mr-1"
         >
-          Update
+          <b-icon icon="pen" aria-hidden="true"></b-icon>
         </b-button>
         <b-button
           variant="danger"
@@ -16,82 +25,142 @@
           @click="info(row.index, row.item, $event.target)"
           class="mr-1"
         >
-          Delete
+          <b-icon icon="trash" aria-hidden="true"></b-icon>
         </b-button>
 
         <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
       </template>
     </b-table>
-    <b-modal :id="infoModal.id">
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="users-table"
+    ></b-pagination>
+    <b-modal :id="infoModal.id" title="Notification" @ok="handleDeleteOk">
       <div class="d-block text-center">
-        <h4>Confirm Delete User {{ infoModal.content }} ??</h4>
+        <h4>Confirm Delete User {{ this.infoModal.content.id }} ?</h4>
       </div>
-      <b-button class="mt-2" variant="outline-danger" block @click="hideModal"
-        >Cancel</b-button
-      >
-      <b-button
-        class="mt-2"
-        variant="outline-success"
-        block
-        @click="toggleModal"
-        >Confirm</b-button
-      >
     </b-modal>
     <b-modal id="update-table" title="Thay đổi thông tin" class="update">
-          <div class="d-block text-center">
+      <b-form class="update-form" @submit="onUpdate">
+        <b-form-group id="input-group-1" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="form.email"
+            type="email"
+            placeholder="Enter email"
+            required
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group id="input-group-1" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="form.username"
+            type="text"
+            placeholder="Enter name"
+            required
+          ></b-form-input>
+        </b-form-group>
 
-          </div>
-          <b-button
-            class="mt-2"
-            variant="outline-danger"
-            block
-            @click="hideModal"
-            >Cancel</b-button
-          >
-          <b-button
-            class="mt-2"
-            variant="outline-success"
-            block
-            @click="toggleModal"
-            >Confirm</b-button
-          >
-        </b-modal>
+        <b-button type="submit" variant="">Update</b-button>
+      </b-form>
+    </b-modal>
   </div>
 </template>
 
 <script>
+
+import repository from "../../service/repo/repository";
 export default {
   name: "UsersTable",
   components: {},
   data() {
     return {
-      fields: ["name", "email", "actions"],
-      items: [
-        { id: 1, name: "Dickerson", email: "Macdonald" },
-        { id: 2, name: "Dickerson1", email: "Macdonald1" },
-        { id: 3, name: "Dickerson2", email: "Macdonald2" },
-        { id: 4, name: "Dickerso3", email: "Macdonald3" },
+      fields: [
+        { key: "username", thClass: "bg-white text-dark" },
+        { key: "email", thClass: "bg-blue text-dark" },
+        { key: "actions", thClass: "bg-white text-dark" }
       ],
+      items: [],
       infoModal: {
         id: "info111",
         title: "",
-        content: "",
+        content: {}
       },
+      form: {
+        id: 0,
+        email: "",
+        username: "",
+        password: ""
+      },
+      perPage: 5,
+      currentPage: 1
     };
   },
+  created() {
+    repository
+      .get(`/user/list-user`)
+      .then(response => {
+        this.items = response.data.data;
+      })
+      .catch(e => {
+        this.errors.push(e);
+      });
+  },
+  computed: {
+      rows() {
+        return this.items.length
+      }
+  },
+
   methods: {
+    async getAllUser() {
+      //get all user in database
+
+      await repository
+        .get("/user/list-user")
+        .then(function(response) {
+          this.items = response.data.data;
+          console.log("jdhjf");
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    async handleDeleteOk() {
+      let self = this;
+      const data = { Id: parseInt(this.infoModal.content.id) };
+      await repository
+        .delete(`/user/list-user/delete`, { data: data })
+        .then(function(response) {
+          self.getAllUser();
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     info(index, item, button) {
-      this.infoModal.content = JSON.stringify(item, null, 2);
+      this.infoModal.content = item;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
+    onUpdate() {},
     update(index, item, button) {
-
       this.$root.$emit("bv::show::modal", "update-table", button);
-    },
-  },
+    }
+  }
 };
 </script>
 <style>
-.userstable {
+.users-table th {
+  background-color: #ccccd0 !important;
+}
+.mr-1 {
+  margin-right: 20px;
+}
+.mr-1:hover {
+  transform: scale(1.3, 1.3);
+  -webkit-transform: scale(1.3, 1.3);
+  -moz-transform: scale(1.3, 1.3);
 }
 </style>

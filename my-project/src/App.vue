@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-     <Navigation/>
+     
 
     <router-view/>
   </div>
@@ -14,19 +14,27 @@ export default {
   name: 'App',
   components:{
     Navigation,Sidebar,Modal
-  }
+  },
+  
 
 }
 </script>
 
-<style>
+<style scoped>
 #app {
-  font-family: var(--cui-font-sans-serif);
+  height: 100%;
+  overflow: auto;
+  /* font-family: Verdana, sans-serif;;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F0E8F0;
   color: #2c3e50;
-
+  font-size:16px;
+  padding :0;
+  overflow: scroll */
+ 
+ 
+  
 }
 @import'~bootstrap/dist/css/bootstrap.css';
 </style>

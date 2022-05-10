@@ -1,8 +1,8 @@
 <template>
   <div class="">
-    <h4>
-        Users
-    </h4>
+    <h6 class="table-header">
+        USERS
+    </h6>
   </div>
 </template>
 <script>
@@ -14,5 +14,9 @@ export default {
 h4 {
   color: black;
   font-weight: 600;
+}
+.table-header{
+  font-size: 16px;
+  font-weight: 700;
 }
 </style>

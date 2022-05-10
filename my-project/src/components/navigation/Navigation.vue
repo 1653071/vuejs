@@ -1,31 +1,65 @@
-
 <template>
+  <div class="navbar">
+    <b-navbar class="navbar-block">
+    
 
-<div>
-  <b-navbar type="dark" variant="dark">
-    <b-navbar-nav>
-      <b-nav-item href="#">Home</b-nav-item>
+  
 
-      <!-- Navbar dropdowns -->
-      <b-nav-item-dropdown text="Lang" right>
-        <b-dropdown-item href="#">EN</b-dropdown-item>
-        <b-dropdown-item href="#">ES</b-dropdown-item>
-        <b-dropdown-item href="#">RU</b-dropdown-item>
-        <b-dropdown-item href="#">FA</b-dropdown-item>
-      </b-nav-item-dropdown>
+    <b-collapse id="nav-collapse" is-nav>
+     
 
-      <b-nav-item-dropdown text="User" right>
-        <b-dropdown-item href="#">Account</b-dropdown-item>
-        <b-dropdown-item href="#">Settings</b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-navbar-nav>
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-avatar :src="user.avatar"></b-avatar>
+      
+       <b-nav-item class="welcome">Hi,{{user.username}}</b-nav-item>
+      
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template #button-content>
+              
+          </template>
+         
+          <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+
+       
+        
+      </b-navbar-nav>
+    </b-collapse>
   </b-navbar>
-</div>
- 
+  </div>
 </template>
 
 <script>
+import {getUser} from "../../service/repo/repository"
 export default {
-  name: "Navigation"
+  name: "Navigation",
+  data() {
+    return {
+      user:getUser()
+    };
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("currentUser");
+      this.$router.push("/login");
+    }
+  }
 };
 </script>
+<style scoped>
+.navbar {
+  background: white;
+  
+}
+.navbar-block{
+  width: 100%;
+  background-color: white;
+}
+.welcome{
+  font-weight: 700;
+}
+</style>
+

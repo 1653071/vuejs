@@ -86,8 +86,8 @@ export default {
       this.$router.push('/')
     },
     onReset(event) {
-      event.preventDefault();
-      // Reset our form values
+      eventeventDefault();
+      // Reset.pr our form values
       this.form.email = "";
       this.form.name = "";
       this.form.food = null;
